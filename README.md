@@ -1,2 +1,2 @@
 # elf-parser
-Lightweight header-only elf binary parser - Sections, Symbols, Relocations, Segments 
+Lightweight header-only elf binary parser with no external dependencies - Sections, Symbols, Relocations, Segments 

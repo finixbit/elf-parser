@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+
+example/sections
+example/segments
+example/relocations
