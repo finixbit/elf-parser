@@ -34,4 +34,6 @@
 
 example/sections
 example/segments
+example/symbols
 example/relocations
+example/tests/test1
