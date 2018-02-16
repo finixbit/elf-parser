@@ -380,6 +380,7 @@ std::intptr_t Elf_parser::get_rel_symbol_value(
     for(auto &sym: syms) {
         if(sym.symbol_num == ELF64_R_SYM(sym_idx)) {
             sym_val = sym.symbol_value;
+            break;
         }
     }
     return sym_val;
@@ -392,6 +393,7 @@ std::string Elf_parser::get_rel_symbol_name(
     for(auto &sym: syms) {
         if(sym.symbol_num == ELF64_R_SYM(sym_idx)) {
             sym_name = sym.symbol_name;
+            break;
         }
     }
     return sym_name;
