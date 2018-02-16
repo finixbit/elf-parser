@@ -48,6 +48,27 @@ std::vector<Elf_parser::segment_t> segs = elf_parser.get_segments();
 ```
 see [example](examples/segments.cc)
 
+## Symbols (readelf -s executable)
+parse symbols table from elf binary and return vector of symbol_t below
+
+```
+typedef struct {
+    std::string symbol_index;
+    std::intptr_t symbol_value;
+    int symbol_num = 0, symbol_size = 0;
+    std::string symbol_type, symbol_bind, symbol_visibility, symbol_name, symbol_section;      
+} symbol_t;
+```
+
+get elf symbols using elf-parser
+
+```
+#include <elf-parser.h>
+Elf_parser::Elf_parser elf_parser(executable_path);
+std::vector<Elf_parser::symbol_t> syms = elf_parser.get_symbols();
+```
+see [example](examples/symbols.cc)
+
 
 # Supported Architecture
 amd64
