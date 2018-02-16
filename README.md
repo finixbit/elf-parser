@@ -69,7 +69,7 @@ std::vector<Elf_parser::symbol_t> syms = elf_parser.get_symbols();
 ```
 see [example](examples/symbols.cc)
 
-## Relocations (readelf --program-headers executable)
+## Relocations (readelf -r executable)
 parse relocations with plt address from elf binary and return vector of relocation_t below
 
 ```
