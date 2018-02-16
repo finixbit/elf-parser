@@ -14,7 +14,6 @@ int main(int argc, char* argv[]) {
     std::string program((std::string)argv[1]);
     Elf_parser::Elf_parser elf_parser(program);
 
-    // readelf -S <executable>
     std::vector<Elf_parser::relocation_t> relocs = elf_parser.get_relocations();
     print_relocations(relocs);
     return 0;
