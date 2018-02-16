@@ -28,11 +28,31 @@ std::vector<Elf_parser::section_t> secs = elf_parser.get_sections();
 ```
 see [example](examples/sections.cc)
 
+## Segments (readelf -l executable)
+parse program header table from elf binary and return vector of segment_t below
+
+```
+typedef struct {
+    std::string segment_type, segment_flags;
+    long segment_offset, segment_virtaddr, segment_physaddr, segment_filesize, segment_memsize;
+    int segment_align;
+} segment_t;
+```
+
+get elf segments using elf-parser
+
+```
+#include <elf-parser.h>
+Elf_parser::Elf_parser elf_parser(executable_path);
+std::vector<Elf_parser::segment_t> segs = elf_parser.get_segments();
+```
+see [example](examples/segments.cc)
+
 
 # Supported Architecture
 amd64
 
-# Project using elf-parser
+# Projects using elf-parser
 [ltrace - Library call tracer](http://github.com/finixbit/ltrace)
 
 [ftrace - Function call tracer](http://github.com/finixbit/ftrace)

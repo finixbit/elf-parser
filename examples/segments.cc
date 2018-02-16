@@ -14,7 +14,6 @@ int main(int argc, char* argv[]) {
     std::string program((std::string)argv[1]);
     Elf_parser::Elf_parser elf_parser(program);
 
-    // readelf -l <executable>
     std::vector<Elf_parser::segment_t> segs = elf_parser.get_segments();
     print_segments(segs);
     return 0;
