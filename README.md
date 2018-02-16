@@ -6,7 +6,7 @@ No dependencies
 
 # Usage
 
-## Sections (readelf -S <executable>)
+## Sections (readelf -S executable)
 parse sections header table from elf binary and return vector of section_t below
 
 ```
@@ -33,6 +33,7 @@ see [example](examples/sections.cc)
 amd64
 
 # Project using elf-parser
-[ltrace](http://github.com/finixbit/ltrace)
-[ftrace](http://github.com/finixbit/ftrace)
+[ltrace - Library call tracer](http://github.com/finixbit/ltrace)
+
+[ftrace - Function call tracer](http://github.com/finixbit/ftrace)
 
