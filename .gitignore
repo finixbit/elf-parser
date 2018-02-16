@@ -32,8 +32,8 @@
 *.app
 
 
-example/sections
-example/segments
-example/symbols
-example/relocations
-example/tests/test1
+examples/sections
+examples/segments
+examples/symbols
+examples/relocations
+examples/tests/test1
