@@ -47,13 +47,9 @@ class Elf_parser {
         Elf_parser (std::string &program_path): m_program_path{program_path} {   
             load_memory_map();
         }
-
         std::vector<section_t> get_sections();
-        
         std::vector<segment_t> get_segments();
-        
         std::vector<symbol_t> get_symbols();
-        
         std::vector<relocation_t> get_relocations();
         
     private:
@@ -62,22 +58,15 @@ class Elf_parser {
         std::string get_section_type(int tt);
 
         std::string get_segment_type(uint32_t &seg_type);
-
         std::string get_segment_flags(uint32_t &seg_flags);
 
         std::string get_symbol_type(uint8_t &sym_type);
-        
         std::string get_symbol_bind(uint8_t &sym_bind);
-        
         std::string get_symbol_visibility(uint8_t &sym_vis);
-        
         std::string get_symbol_index(uint16_t &sym_idx);
 
         std::string get_relocation_type(uint64_t &rela_type);
-        
-        std::intptr_t get_rel_symbol_value(
-            uint64_t &sym_idx, std::vector<symbol_t> &syms);
-        
+        std::intptr_t get_rel_symbol_value(uint64_t &sym_idx, std::vector<symbol_t> &syms);
         std::string get_rel_symbol_name(
             uint64_t &sym_idx, std::vector<symbol_t> &syms);
 
