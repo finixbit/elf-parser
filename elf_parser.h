@@ -51,6 +51,7 @@ class Elf_parser {
         std::vector<segment_t> get_segments();
         std::vector<symbol_t> get_symbols();
         std::vector<relocation_t> get_relocations();
+        uint8_t *get_memory_map();
         
     private:
         void load_memory_map();
@@ -225,6 +226,10 @@ std::vector<relocation_t> Elf_parser::get_relocations() {
         }
     }
     return relocations;
+}
+
+uint8_t *Elf_parser::get_memory_map() {
+    return m_mmap_program;
 }
 
 void Elf_parser::load_memory_map() {
