@@ -1,6 +1,6 @@
 
 
-all: sections symbols segments relocations test1
+all: sections symbols segments relocations
 
 sections: sections.cc 
 	g++ -o sections sections.cc -std=gnu++11 
@@ -14,8 +14,5 @@ segments: segments.cc
 relocations: relocations.cc 
 	g++ -o relocations relocations.cc -std=gnu++11 
 
-test1: tests/test1.cc 
-	g++ -o tests/test1 tests/test1.cc -std=gnu++11 -g
-
 clean:
-	rm -f sections symbols segments relocations tests/test1
+	rm -f sections symbols segments relocations
