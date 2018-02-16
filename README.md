@@ -69,6 +69,26 @@ std::vector<Elf_parser::symbol_t> syms = elf_parser.get_symbols();
 ```
 see [example](examples/symbols.cc)
 
+## Relocations (readelf -s executable)
+parse relocations with plt address from elf binary and return vector of relocation_t below
+
+```
+typedef struct {
+    std::intptr_t relocation_offset, relocation_info, relocation_symbol_value;
+    std::string   relocation_type, relocation_symbol_name, relocation_section_name;
+    std::intptr_t relocation_plt_address;
+} relocation_t;
+```
+
+get elf relocations using elf-parser
+
+```
+#include <elf-parser.h>
+Elf_parser::Elf_parser elf_parser(executable_path);
+std::vector<Elf_parser::relocation_t> relocs = elf_parser.get_relocations();
+```
+see [example](examples/relocations.cc)
+
 
 # Supported Architecture
 amd64
