@@ -12,7 +12,7 @@
 #include <elf.h>      // Elf64_Shdr
 #include <fcntl.h>
 
-namespace Elf_parser {
+namespace elf_parser {
 
 typedef struct {
     int section_index = 0; 

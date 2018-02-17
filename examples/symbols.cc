@@ -2,7 +2,7 @@
 #include <inttypes.h> // PRIx64 
 #include "../elf_parser.h"
 
-void print_symbols(std::vector<Elf_parser::symbol_t> &symbols);
+void print_symbols(std::vector<elf_parser::symbol_t> &symbols);
 
 int main(int argc, char* argv[]) {
     char usage_banner[] = "usage: ./sections [<executable>]\n";
@@ -12,14 +12,14 @@ int main(int argc, char* argv[]) {
     }
 
     std::string program((std::string)argv[1]);
-    Elf_parser::Elf_parser elf_parser(program);
+    elf_parser::Elf_parser elf_parser(program);
 
-    std::vector<Elf_parser::symbol_t> syms = elf_parser.get_symbols();
+    std::vector<elf_parser::symbol_t> syms = elf_parser.get_symbols();
     print_symbols(syms);
     return 0;
 }
 
-void print_symbols(std::vector<Elf_parser::symbol_t> &symbols) {
+void print_symbols(std::vector<elf_parser::symbol_t> &symbols) {
     printf("Num:    Value  Size Type    Bind   Vis      Ndx Name\n");
     for (auto &symbol : symbols) {
         printf("%-3d: %08" PRIx64 "  %-4d %-8s %-7s %-9s %-3s %s(%s)\n",

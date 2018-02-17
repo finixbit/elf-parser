@@ -2,7 +2,7 @@
 #include <inttypes.h> // PRIx64 
 #include "../elf_parser.h"
 
-void print_segments(std::vector<Elf_parser::segment_t> &segments);
+void print_segments(std::vector<elf_parser::segment_t> &segments);
 
 int main(int argc, char* argv[]) {
     char usage_banner[] = "usage: ./sections [<executable>]\n";
@@ -12,14 +12,14 @@ int main(int argc, char* argv[]) {
     }
 
     std::string program((std::string)argv[1]);
-    Elf_parser::Elf_parser elf_parser(program);
+    elf_parser::Elf_parser elf_parser(program);
 
-    std::vector<Elf_parser::segment_t> segs = elf_parser.get_segments();
+    std::vector<elf_parser::segment_t> segs = elf_parser.get_segments();
     print_segments(segs);
     return 0;
 }
 
-void print_segments(std::vector<Elf_parser::segment_t> &segments) {
+void print_segments(std::vector<elf_parser::segment_t> &segments) {
     printf("  %-16s  %-16s   %-16s   %s\n", "Type", "Offset", "VirtAddr", "PhysAddr");
     printf("  %-16s  %-16s   %-16s  %6s %5s\n", " ", "FileSiz", "MemSiz", "Flags", "Align");
 

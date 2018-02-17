@@ -2,7 +2,7 @@
 #include <inttypes.h> // PRIx64 
 #include "../elf_parser.h"
 
-void print_relocations(std::vector<Elf_parser::relocation_t> &relocations);
+void print_relocations(std::vector<elf_parser::relocation_t> &relocations);
 
 int main(int argc, char* argv[]) {
     char usage_banner[] = "usage: ./sections [<executable>]\n";
@@ -12,14 +12,14 @@ int main(int argc, char* argv[]) {
     }
 
     std::string program((std::string)argv[1]);
-    Elf_parser::Elf_parser elf_parser(program);
+    elf_parser::Elf_parser elf_parser(program);
 
-    std::vector<Elf_parser::relocation_t> relocs = elf_parser.get_relocations();
+    std::vector<elf_parser::relocation_t> relocs = elf_parser.get_relocations();
     print_relocations(relocs);
     return 0;
 }
 
-void print_relocations(std::vector<Elf_parser::relocation_t> &relocations) {
+void print_relocations(std::vector<elf_parser::relocation_t> &relocations) {
     printf("  [*] %-16s %-16s %-16s %-16s %s\n", "Offset", "Info", "Type", "Sym. Value", "Sym. Name (section)");
     printf("  [*] %-16s\n", "Calculated PLT Address");
     for (auto &rel : relocations) {

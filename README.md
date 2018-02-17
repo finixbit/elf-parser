@@ -23,8 +23,8 @@ get elf sections using elf-parser
 
 ```
 #include <elf-parser.h>
-Elf_parser::Elf_parser elf_parser(executable_path);
-std::vector<Elf_parser::section_t> secs = elf_parser.get_sections();
+elf_parser::Elf_parser elf_parser(executable_path);
+std::vector<elf_parser::section_t> secs = elf_parser.get_sections();
 ```
 see [example](examples/sections.cc)
 
@@ -43,8 +43,8 @@ get elf segments using elf-parser
 
 ```
 #include <elf-parser.h>
-Elf_parser::Elf_parser elf_parser(executable_path);
-std::vector<Elf_parser::segment_t> segs = elf_parser.get_segments();
+elf_parser::Elf_parser elf_parser(executable_path);
+std::vector<elf_parser::segment_t> segs = elf_parser.get_segments();
 ```
 see [example](examples/segments.cc)
 
@@ -64,8 +64,8 @@ get elf symbols using elf-parser
 
 ```
 #include <elf-parser.h>
-Elf_parser::Elf_parser elf_parser(executable_path);
-std::vector<Elf_parser::symbol_t> syms = elf_parser.get_symbols();
+elf_parser::Elf_parser elf_parser(executable_path);
+std::vector<elf_parser::symbol_t> syms = elf_parser.get_symbols();
 ```
 see [example](examples/symbols.cc)
 
@@ -84,8 +84,8 @@ get elf relocations using elf-parser
 
 ```
 #include <elf-parser.h>
-Elf_parser::Elf_parser elf_parser(executable_path);
-std::vector<Elf_parser::relocation_t> relocs = elf_parser.get_relocations();
+elf_parser::Elf_parser elf_parser(executable_path);
+std::vector<elf_parser::relocation_t> relocs = elf_parser.get_relocations();
 ```
 see [example](examples/relocations.cc)
 
