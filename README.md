@@ -94,7 +94,7 @@ see [example](examples/relocations.cc)
 amd64
 
 # Projects using elf-parser
-[finixbit/ltrace - Library call tracer](http://github.com/finixbit/ltrace)
+[finixbit / ltrace - Library call tracer](http://github.com/finixbit/ltrace)
 
-[finixbit/ftrace - Function call tracer](http://github.com/finixbit/ftrace)
+[finixbit / ftrace - Function call tracer](http://github.com/finixbit/ftrace)
 
