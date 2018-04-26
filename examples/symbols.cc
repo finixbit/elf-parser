@@ -1,6 +1,6 @@
 #include <iostream>
 #include <inttypes.h> // PRIx64 
-#include "../elf_parser.h"
+#include "../elf_parser.hpp"
 
 void print_symbols(std::vector<elf_parser::symbol_t> &symbols);
 

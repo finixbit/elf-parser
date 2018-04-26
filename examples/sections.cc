@@ -1,6 +1,6 @@
 #include <iostream>
 #include <inttypes.h> // PRIx64 
-#include "../elf_parser.h"
+#include "../elf_parser.hpp"
 
 void print_sections(std::vector<elf_parser::section_t> &sections);
 

@@ -1,6 +1,6 @@
 #include <iostream>
 #include <inttypes.h> // PRIx64 
-#include "../elf_parser.h"
+#include "../elf_parser.hpp"
 
 void print_segments(std::vector<elf_parser::segment_t> &segments);
 
