@@ -9,7 +9,7 @@ No dependencies
 ## Sections (readelf -S executable)
 parse sections header table from elf binary and return vector of section_t below
 
-```
+```cpp
 typedef struct {
     int section_index = 0; 
     std::intptr_t section_offset, section_addr;
@@ -21,7 +21,7 @@ typedef struct {
 
 get elf sections using elf-parser
 
-```
+```cpp
 #include <elf-parser.h>
 elf_parser::Elf_parser elf_parser(executable_path);
 std::vector<elf_parser::section_t> secs = elf_parser.get_sections();
@@ -31,7 +31,7 @@ see [example](examples/sections.cc)
 ## Segments (readelf -l executable)
 parse program header table from elf binary and return vector of segment_t below
 
-```
+```cpp
 typedef struct {
     std::string segment_type, segment_flags;
     long segment_offset, segment_virtaddr, segment_physaddr, segment_filesize, segment_memsize;
@@ -41,7 +41,7 @@ typedef struct {
 
 get elf segments using elf-parser
 
-```
+```cpp
 #include <elf-parser.h>
 elf_parser::Elf_parser elf_parser(executable_path);
 std::vector<elf_parser::segment_t> segs = elf_parser.get_segments();
@@ -51,7 +51,7 @@ see [example](examples/segments.cc)
 ## Symbols (readelf -s executable)
 parse symbols table from elf binary and return vector of symbol_t below
 
-```
+```cpp
 typedef struct {
     std::string symbol_index;
     std::intptr_t symbol_value;
@@ -62,7 +62,7 @@ typedef struct {
 
 get elf symbols using elf-parser
 
-```
+```cpp
 #include <elf-parser.h>
 elf_parser::Elf_parser elf_parser(executable_path);
 std::vector<elf_parser::symbol_t> syms = elf_parser.get_symbols();
@@ -72,7 +72,7 @@ see [example](examples/symbols.cc)
 ## Relocations (readelf -r executable)
 parse relocations with plt address from elf binary and return vector of relocation_t below
 
-```
+```cpp
 typedef struct {
     std::intptr_t relocation_offset, relocation_info, relocation_symbol_value;
     std::string   relocation_type, relocation_symbol_name, relocation_section_name;
@@ -82,7 +82,7 @@ typedef struct {
 
 get elf relocations using elf-parser
 
-```
+```cpp
 #include <elf-parser.h>
 elf_parser::Elf_parser elf_parser(executable_path);
 std::vector<elf_parser::relocation_t> relocs = elf_parser.get_relocations();
