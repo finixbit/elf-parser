@@ -53,10 +53,6 @@ std::vector<segment_t> Elf_parser::get_segments() {
     Elf64_Phdr *phdr = (Elf64_Phdr*)(m_mmap_program + ehdr->e_phoff);
     int phnum = ehdr->e_phnum;
 
-    Elf64_Shdr *shdr = (Elf64_Shdr*)(m_mmap_program + ehdr->e_shoff);
-    Elf64_Shdr *sh_strtab = &shdr[ehdr->e_shstrndx];
-    const char *const sh_strtab_p = (char*)m_mmap_program + sh_strtab->sh_offset;
-
     std::vector<segment_t> segments;
     for (int i = 0; i < phnum; ++i) {
         segment_t segment;
@@ -76,10 +72,6 @@ std::vector<segment_t> Elf_parser::get_segments() {
 
 std::vector<symbol_t> Elf_parser::get_symbols() {
     std::vector<section_t> secs = get_sections();
-
-    // get headers for offsets
-    Elf64_Ehdr *ehdr = (Elf64_Ehdr*)m_mmap_program;
-    Elf64_Shdr *shdr = (Elf64_Shdr*)(m_mmap_program + ehdr->e_shoff);
 
     // get strtab
     char *sh_strtab_p = nullptr;
@@ -107,7 +99,7 @@ std::vector<symbol_t> Elf_parser::get_symbols() {
         auto total_syms = sec.section_size / sizeof(Elf64_Sym);
         auto syms_data = (Elf64_Sym*)(m_mmap_program + sec.section_offset);
 
-        for (int i = 0; i < total_syms; ++i) {
+        for (unsigned i = 0; i < total_syms; ++i) {
             symbol_t symbol;
             symbol.symbol_num       = i;
             symbol.symbol_value     = syms_data[i].st_value;
@@ -154,7 +146,7 @@ std::vector<relocation_t> Elf_parser::get_relocations() {
         auto total_relas = sec.section_size / sizeof(Elf64_Rela);
         auto relas_data  = (Elf64_Rela*)(m_mmap_program + sec.section_offset);
 
-        for (int i = 0; i < total_relas; ++i) {
+        for (unsigned i = 0; i < total_relas; ++i) {
             relocation_t rel;
             rel.relocation_offset = static_cast<std::intptr_t>(relas_data[i].r_offset);
             rel.relocation_info   = static_cast<std::intptr_t>(relas_data[i].r_info);
@@ -181,7 +173,7 @@ uint8_t *Elf_parser::get_memory_map() {
 }
 
 void Elf_parser::load_memory_map() {
-    int fd, i;
+    int fd;
     struct stat st;
 
     if ((fd = open(m_program_path.c_str(), O_RDONLY)) < 0) {
@@ -331,7 +323,7 @@ std::intptr_t Elf_parser::get_rel_symbol_value(
     
     std::intptr_t sym_val = 0;
     for(auto &sym: syms) {
-        if(sym.symbol_num == ELF64_R_SYM(sym_idx)) {
+        if(static_cast<uint64_t>(sym.symbol_num) == ELF64_R_SYM(sym_idx)) {
             sym_val = sym.symbol_value;
             break;
         }
@@ -344,7 +336,7 @@ std::string Elf_parser::get_rel_symbol_name(
 
     std::string sym_name;
     for(auto &sym: syms) {
-        if(sym.symbol_num == ELF64_R_SYM(sym_idx)) {
+        if(static_cast<uint64_t>(sym.symbol_num) == ELF64_R_SYM(sym_idx)) {
             sym_name = sym.symbol_name;
             break;
         }
