@@ -66,7 +66,7 @@ typedef struct {
 
 class Elf_parser {
     public:
-        Elf_parser (std::string &program_path): m_program_path{program_path} {   
+        Elf_parser (const std::string &program_path): m_program_path{program_path} {   
             load_memory_map();
         }
         std::vector<section_t> get_sections();
