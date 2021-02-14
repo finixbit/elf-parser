@@ -23,7 +23,7 @@
 #include "elf_parser.hpp"
 using namespace elf_parser;
 
-std::vector<section_t> Elf_parser::get_sections() {
+std::vector<section_t> Elf_parser::get_sections() const{
     Elf64_Ehdr *ehdr = (Elf64_Ehdr*)m_mmap_program;
     Elf64_Shdr *shdr = (Elf64_Shdr*)(m_mmap_program + ehdr->e_shoff);
     int shnum = ehdr->e_shnum;
@@ -48,9 +48,9 @@ std::vector<section_t> Elf_parser::get_sections() {
     return sections;
 }
 
-std::vector<segment_t> Elf_parser::get_segments() {
-    Elf64_Ehdr *ehdr = (Elf64_Ehdr*)m_mmap_program;
-    Elf64_Phdr *phdr = (Elf64_Phdr*)(m_mmap_program + ehdr->e_phoff);
+std::vector<segment_t> Elf_parser::get_segments() const {
+    const Elf64_Ehdr *ehdr = (Elf64_Ehdr*)m_mmap_program;
+    const Elf64_Phdr *phdr = (Elf64_Phdr*)(m_mmap_program + ehdr->e_phoff);
     int phnum = ehdr->e_phnum;
 
     std::vector<segment_t> segments;
@@ -70,12 +70,12 @@ std::vector<segment_t> Elf_parser::get_segments() {
     return segments;
 }
 
-std::vector<symbol_t> Elf_parser::get_symbols() {
-    std::vector<section_t> secs = get_sections();
+std::vector<symbol_t> Elf_parser::get_symbols() const {
+    const std::vector<section_t> secs = get_sections();
 
     // get strtab
     char *sh_strtab_p = nullptr;
-    for(auto &sec: secs) {
+    for(const auto &sec: secs) {
         if((sec.section_type == "SHT_STRTAB") && (sec.section_name == ".strtab")){
             sh_strtab_p = (char*)m_mmap_program + sec.section_offset;
             break;
@@ -84,7 +84,7 @@ std::vector<symbol_t> Elf_parser::get_symbols() {
 
     // get dynstr
     char *sh_dynstr_p = nullptr;
-    for(auto &sec: secs) {
+    for(const auto &sec: secs) {
         if((sec.section_type == "SHT_STRTAB") && (sec.section_name == ".dynstr")){
             sh_dynstr_p = (char*)m_mmap_program + sec.section_offset;
             break;
@@ -92,12 +92,12 @@ std::vector<symbol_t> Elf_parser::get_symbols() {
     }
 
     std::vector<symbol_t> symbols;
-    for(auto &sec: secs) {
+    for(const auto &sec: secs) {
         if((sec.section_type != "SHT_SYMTAB") && (sec.section_type != "SHT_DYNSYM"))
             continue;
 
-        auto total_syms = sec.section_size / sizeof(Elf64_Sym);
-        auto syms_data = (Elf64_Sym*)(m_mmap_program + sec.section_offset);
+        const auto total_syms = sec.section_size / sizeof(Elf64_Sym);
+        const auto syms_data = (Elf64_Sym*)(m_mmap_program + sec.section_offset);
 
         for (unsigned i = 0; i < total_syms; ++i) {
             symbol_t symbol;
@@ -122,14 +122,14 @@ std::vector<symbol_t> Elf_parser::get_symbols() {
     return symbols;
 }
 
-std::vector<relocation_t> Elf_parser::get_relocations() {
-    auto secs = get_sections();
-    auto syms = get_symbols();
+std::vector<relocation_t> Elf_parser::get_relocations() const{
+    const auto secs = get_sections();
+    const auto syms = get_symbols();
     
     int  plt_entry_size = 0;
     long plt_vma_address = 0;
 
-    for (auto &sec : secs) {
+    for (const auto &sec : secs) {
         if(sec.section_name == ".plt") {
           plt_entry_size = sec.section_ent_size;
           plt_vma_address = sec.section_addr;
@@ -138,13 +138,13 @@ std::vector<relocation_t> Elf_parser::get_relocations() {
     }
 
     std::vector<relocation_t> relocations;
-    for (auto &sec : secs) {
+    for (const auto &sec : secs) {
 
         if(sec.section_type != "SHT_RELA") 
             continue;
 
-        auto total_relas = sec.section_size / sizeof(Elf64_Rela);
-        auto relas_data  = (Elf64_Rela*)(m_mmap_program + sec.section_offset);
+        const auto total_relas = sec.section_size / sizeof(Elf64_Rela);
+        const auto relas_data  = (Elf64_Rela*)(m_mmap_program + sec.section_offset);
 
         for (unsigned i = 0; i < total_relas; ++i) {
             relocation_t rel;
@@ -168,7 +168,10 @@ std::vector<relocation_t> Elf_parser::get_relocations() {
     return relocations;
 }
 
-uint8_t *Elf_parser::get_memory_map() {
+const uint8_t *Elf_parser::get_memory_map() const{
+    return m_mmap_program;
+}
+uint8_t *Elf_parser::get_memory_map(){
     return m_mmap_program;
 }
 
@@ -184,20 +187,20 @@ void Elf_parser::load_memory_map() {
         printf("Err: fstat\n");
         exit(-1);
     }
-    m_mmap_program = static_cast<uint8_t*>(mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0));
+    m_mmap_program = static_cast<uint8_t*>(mmap(nullptr, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0));
     if (m_mmap_program == MAP_FAILED) {
         printf("Err: mmap\n");
         exit(-1);
     }
 
-    auto header = (Elf64_Ehdr*)m_mmap_program;
+    const auto header = (Elf64_Ehdr*)m_mmap_program;
     if (header->e_ident[EI_CLASS] != ELFCLASS64) {
         printf("Only 64-bit files supported\n");
         exit(1);
     }
 }
 
-std::string Elf_parser::get_section_type(int tt) {
+std::string Elf_parser::get_section_type(int tt) const{
     if(tt < 0)
         return "UNKNOWN";
 
@@ -218,7 +221,7 @@ std::string Elf_parser::get_section_type(int tt) {
     return "UNKNOWN";
 }
 
-std::string Elf_parser::get_segment_type(uint32_t &seg_type) {
+std::string Elf_parser::get_segment_type(uint32_t seg_type) const {
     switch(seg_type) {
         case PT_NULL:   return "NULL";                  /* Program header table entry unused */ 
         case PT_LOAD: return "LOAD";                    /* Loadable program segment */
@@ -244,7 +247,7 @@ std::string Elf_parser::get_segment_type(uint32_t &seg_type) {
     }
 }
 
-std::string Elf_parser::get_segment_flags(uint32_t &seg_flags) {
+std::string Elf_parser::get_segment_flags(uint32_t seg_flags) const {
     std::string flags;
 
     if(seg_flags & PF_R)
@@ -259,7 +262,7 @@ std::string Elf_parser::get_segment_flags(uint32_t &seg_flags) {
     return flags;
 }
 
-std::string Elf_parser::get_symbol_type(uint8_t &sym_type) {
+std::string Elf_parser::get_symbol_type(uint8_t sym_type) const {
     switch(ELF32_ST_TYPE(sym_type)) {
         case 0: return "NOTYPE";
         case 1: return "OBJECT";
@@ -274,7 +277,7 @@ std::string Elf_parser::get_symbol_type(uint8_t &sym_type) {
     }
 }
 
-std::string Elf_parser::get_symbol_bind(uint8_t &sym_bind) {
+std::string Elf_parser::get_symbol_bind(uint8_t sym_bind) const {
     switch(ELF32_ST_BIND(sym_bind)) {
         case 0: return "LOCAL";
         case 1: return "GLOBAL";
@@ -287,7 +290,7 @@ std::string Elf_parser::get_symbol_bind(uint8_t &sym_bind) {
     }
 }
 
-std::string Elf_parser::get_symbol_visibility(uint8_t &sym_vis) {
+std::string Elf_parser::get_symbol_visibility(uint8_t sym_vis) const{
     switch(ELF32_ST_VISIBILITY(sym_vis)) {
         case 0: return "DEFAULT";
         case 1: return "INTERNAL";
@@ -297,7 +300,7 @@ std::string Elf_parser::get_symbol_visibility(uint8_t &sym_vis) {
     }
 }
 
-std::string Elf_parser::get_symbol_index(uint16_t &sym_idx) {
+std::string Elf_parser::get_symbol_index(uint16_t sym_idx) const{
     switch(sym_idx) {
         case SHN_ABS: return "ABS";
         case SHN_COMMON: return "COM";
@@ -307,7 +310,7 @@ std::string Elf_parser::get_symbol_index(uint16_t &sym_idx) {
     }
 }
 
-std::string Elf_parser::get_relocation_type(uint64_t &rela_type) {
+std::string Elf_parser::get_relocation_type(uint64_t rela_type) const{
     switch(ELF64_R_TYPE(rela_type)) {
         case 1: return "R_X86_64_32";
         case 2: return "R_X86_64_PC32";
@@ -319,10 +322,10 @@ std::string Elf_parser::get_relocation_type(uint64_t &rela_type) {
 }
 
 std::intptr_t Elf_parser::get_rel_symbol_value(
-                uint64_t &sym_idx, std::vector<symbol_t> &syms) {
+                uint64_t sym_idx, const std::vector<symbol_t> &syms) const {
     
     std::intptr_t sym_val = 0;
-    for(auto &sym: syms) {
+    for(const auto &sym: syms) {
         if(static_cast<uint64_t>(sym.symbol_num) == ELF64_R_SYM(sym_idx)) {
             sym_val = sym.symbol_value;
             break;
@@ -332,10 +335,10 @@ std::intptr_t Elf_parser::get_rel_symbol_value(
 }
 
 std::string Elf_parser::get_rel_symbol_name(
-                uint64_t &sym_idx, std::vector<symbol_t> &syms) {
+                uint64_t sym_idx, const std::vector<symbol_t> &syms) const {
 
     std::string sym_name;
-    for(auto &sym: syms) {
+    for(const auto &sym: syms) {
         if(static_cast<uint64_t>(sym.symbol_num) == ELF64_R_SYM(sym_idx)) {
             sym_name = sym.symbol_name;
             break;
