@@ -69,6 +69,14 @@ class Elf_parser {
         Elf_parser (const std::string &program_path): m_program_path{program_path} {   
             load_memory_map();
         }
+		~Elf_parser();
+
+		// Disable moves/copies
+		Elf_parser(const Elf_parser&) = delete;
+		Elf_parser(Elf_parser&&) = delete;
+		Elf_parser& operator=(Elf_parser&&) = delete;
+		Elf_parser& operator=(const Elf_parser&) = delete;
+
         std::vector<section_t> get_sections() const ;
         std::vector<segment_t> get_segments() const;
         std::vector<symbol_t> get_symbols() const;
@@ -96,6 +104,7 @@ class Elf_parser {
 
         std::string m_program_path; 
         uint8_t *m_mmap_program;
+		size_t m_elf_size;
 };
 
 }

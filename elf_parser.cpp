@@ -187,7 +187,8 @@ void Elf_parser::load_memory_map() {
         printf("Err: fstat\n");
         exit(-1);
     }
-    m_mmap_program = static_cast<uint8_t*>(mmap(nullptr, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0));
+	m_elf_size = st.st_size;
+    m_mmap_program = static_cast<uint8_t*>(mmap(nullptr, m_elf_size, PROT_READ, MAP_PRIVATE, fd, 0));
     if (m_mmap_program == MAP_FAILED) {
         printf("Err: mmap\n");
         exit(-1);
@@ -345,4 +346,9 @@ std::string Elf_parser::get_rel_symbol_name(
         }
     }
     return sym_name;
+}
+
+Elf_parser::~Elf_parser()
+{
+	munmap(m_mmap_program, m_elf_size);
 }
