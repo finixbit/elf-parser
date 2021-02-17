@@ -23,16 +23,8 @@
 #ifndef H_ELF_PARSER
 #define H_ELF_PARSER
 
-#include <iostream>
 #include <string>
-#include <cstdlib>
-#include <cstdio>
-#include <fcntl.h>    /* O_RDONLY */
-#include <sys/stat.h> /* For the size of the file. , fstat */
-#include <sys/mman.h> /* mmap, MAP_PRIVATE */
 #include <vector>
-#include <elf.h>      // Elf64_Shdr
-#include <fcntl.h>
 
 namespace elf_parser {
 
@@ -76,6 +68,9 @@ class Elf_parser {
 		Elf_parser(Elf_parser&&) = delete;
 		Elf_parser& operator=(Elf_parser&&) = delete;
 		Elf_parser& operator=(const Elf_parser&) = delete;
+
+		// Get ELF entry point address
+		uintptr_t get_entry_point() const;
 
         std::vector<section_t> get_sections() const ;
         std::vector<segment_t> get_segments() const;
