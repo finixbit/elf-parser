@@ -27,6 +27,9 @@
 #include <sys/mman.h> /* mmap, MAP_PRIVATE */
 #include <stdexcept>
 
+constexpr size_t MIN_ELF_SIZE = 0x40;
+constexpr uint32_t MAGIC_NUMBER = 0x464C457f;
+
 using namespace elf_parser;
 
 std::vector<section_t> Elf_parser::get_sections() const{
@@ -196,6 +199,13 @@ void Elf_parser::load_memory_map() {
 	if (m_mmap_program == MAP_FAILED) {
 		throw std::runtime_error("Could not mmap ELF");
 	}
+
+	if(m_elf_size < MIN_ELF_SIZE||
+		*(uint32_t*)m_mmap_program != MAGIC_NUMBER)
+	{
+		throw std::runtime_error("Not an ELF file");
+	}
+
 
 	const auto header = (Elf64_Ehdr*)m_mmap_program;
 	if (header->e_ident[EI_CLASS] != ELFCLASS64) {
