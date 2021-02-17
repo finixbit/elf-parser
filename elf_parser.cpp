@@ -366,13 +366,17 @@ uintptr_t Elf_parser::get_entry_point() const
 Elf_parser::Elf_parser(Elf_parser&& rhs)
 {
 	m_mmap_program = rhs.m_mmap_program;
+	m_elf_size = rhs.m_elf_size;
 	rhs.m_mmap_program = nullptr;
+	rhs.m_elf_size = 0;
 }
 
 Elf_parser& Elf_parser::operator=(Elf_parser&& rhs)
 {
 	m_mmap_program = rhs.m_mmap_program;
+	m_elf_size = rhs.m_elf_size;
 	rhs.m_mmap_program = nullptr;
+	rhs.m_elf_size = 0;
 	return *this;
 }
 
