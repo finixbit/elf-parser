@@ -25,6 +25,7 @@
 #include <fcntl.h>
 #include <sys/stat.h> /* For the size of the file. , fstat */
 #include <sys/mman.h> /* mmap, MAP_PRIVATE */
+#include <stdexcept>
 
 using namespace elf_parser;
 
@@ -185,31 +186,24 @@ void Elf_parser::load_memory_map() {
     struct stat st;
 
     if ((fd = open(m_program_path.c_str(), O_RDONLY)) < 0) {
-        printf("Err: open\n");
-        exit(-1);
+		throw std::runtime_error("Could not open ELF file");
     }
     if (fstat(fd, &st) < 0) {
-        printf("Err: fstat\n");
-        exit(-1);
+		throw std::runtime_error("Could not stat ELF file");
     }
 	m_elf_size = st.st_size;
     m_mmap_program = static_cast<uint8_t*>(mmap(nullptr, m_elf_size, PROT_READ, MAP_PRIVATE, fd, 0));
     if (m_mmap_program == MAP_FAILED) {
-        printf("Err: mmap\n");
-        exit(-1);
+		throw std::runtime_error("Could not mmap ELF");
     }
 
     const auto header = (Elf64_Ehdr*)m_mmap_program;
     if (header->e_ident[EI_CLASS] != ELFCLASS64) {
-        printf("Only 64-bit files supported\n");
-        exit(1);
+		throw std::runtime_error("64-bit not supported");
     }
 }
 
 std::string Elf_parser::get_section_type(int tt) const{
-    if(tt < 0)
-        return "UNKNOWN";
-
     switch(tt) {
         case 0: return "SHT_NULL";      /* Section header table entry unused */
         case 1: return "SHT_PROGBITS";  /* Program data */
