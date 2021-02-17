@@ -21,6 +21,11 @@
 // SOFTWARE.
 
 #include "elf_parser.hpp"
+#include <elf.h>      // Elf64_Shdr
+#include <fcntl.h>
+#include <sys/stat.h> /* For the size of the file. , fstat */
+#include <sys/mman.h> /* mmap, MAP_PRIVATE */
+
 using namespace elf_parser;
 
 std::vector<section_t> Elf_parser::get_sections() const{
