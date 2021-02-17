@@ -1,39 +1,21 @@
-# Prerequisites
-*.d
+*
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Git stuff
+!.gitignore
+!.gitattributes
 
-# Precompiled Headers
-*.gch
-*.pch
+# Documentation
+!*.md
+!LICENSE
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# Build
+!Makefile
 
-# Fortran module files
-*.mod
-*.smod
+# Source
+!*.cpp
+!*.cc
+!*.hpp
+!*.h
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-
-
-examples/sections
-examples/segments
-examples/symbols
-examples/relocations
-examples/tests/test1
+# Other directories
+!**/
