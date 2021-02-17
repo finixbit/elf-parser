@@ -1,5 +1,5 @@
 CXXFLAGS = -Wall -Wextra -fmax-errors=1 -O0 -g -I.. -std=c++11 -I../elf-parser
-OBJECTS = elf_parser.o main.o compare.o
+OBJECTS = elf_parser.o main.o compare.o move_semantics.o
 
 all: unit
 	$(MAKE) -C ../examples

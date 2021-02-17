@@ -353,7 +353,21 @@ uintptr_t Elf_parser::get_entry_point() const
 	return elf_header->e_entry;
 }
 
+Elf_parser::Elf_parser(Elf_parser&& rhs)
+{
+	m_mmap_program = rhs.m_mmap_program;
+	rhs.m_mmap_program = nullptr;
+}
+
+Elf_parser& Elf_parser::operator=(Elf_parser&& rhs)
+{
+	m_mmap_program = rhs.m_mmap_program;
+	rhs.m_mmap_program = nullptr;
+	return *this;
+}
+
 Elf_parser::~Elf_parser()
 {
-	munmap(m_mmap_program, m_elf_size);
+	if(m_mmap_program)
+		munmap(m_mmap_program, m_elf_size);
 }

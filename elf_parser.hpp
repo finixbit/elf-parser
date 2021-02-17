@@ -61,12 +61,17 @@ class Elf_parser {
         Elf_parser (const std::string &program_path): m_program_path{program_path} {   
             load_memory_map();
         }
+        Elf_parser (std::string&& program_path): m_program_path{std::move(program_path)} {   
+            load_memory_map();
+        }
 		~Elf_parser();
 
-		// Disable moves/copies
+		// Enable moving
+		Elf_parser(Elf_parser&& rhs);
+		Elf_parser& operator=(Elf_parser&& rhs);
+
+		// Disable copying
 		Elf_parser(const Elf_parser&) = delete;
-		Elf_parser(Elf_parser&&) = delete;
-		Elf_parser& operator=(Elf_parser&&) = delete;
 		Elf_parser& operator=(const Elf_parser&) = delete;
 
 		// Get ELF entry point address
@@ -98,8 +103,8 @@ class Elf_parser {
             uint64_t sym_idx, const std::vector<symbol_t> &syms) const;
 
         std::string m_program_path; 
-        uint8_t *m_mmap_program;
-		size_t m_elf_size;
+        uint8_t *m_mmap_program = nullptr;
+		size_t m_elf_size = 0;
 };
 
 }
