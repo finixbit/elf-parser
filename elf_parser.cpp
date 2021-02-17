@@ -353,6 +353,12 @@ std::string Elf_parser::get_rel_symbol_name(
     return sym_name;
 }
 
+uintptr_t Elf_parser::get_entry_point() const
+{
+    const Elf64_Ehdr *elf_header = (Elf64_Ehdr*)m_mmap_program;
+	return elf_header->e_entry;
+}
+
 Elf_parser::~Elf_parser()
 {
 	munmap(m_mmap_program, m_elf_size);

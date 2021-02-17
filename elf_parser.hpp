@@ -69,6 +69,9 @@ class Elf_parser {
 		Elf_parser& operator=(Elf_parser&&) = delete;
 		Elf_parser& operator=(const Elf_parser&) = delete;
 
+		// Get ELF entry point address
+		uintptr_t get_entry_point() const;
+
         std::vector<section_t> get_sections() const ;
         std::vector<segment_t> get_segments() const;
         std::vector<symbol_t> get_symbols() const;
