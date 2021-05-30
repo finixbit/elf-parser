@@ -1,12 +1,13 @@
-# elf-parser
+# Elf Parser
 Lightweight elf binary parser with no external dependencies - Sections, Symbols, Relocations, Segments 
 
-# Required libraries
-No dependencies
+## Required libraries
+No dependencies to use library  
+Requires `Elfio` for unit tests  
 
-# Usage
+## Usage
 
-## Sections (readelf -S executable)
+### Sections (readelf -S executable)
 parse sections header table from elf binary and return vector of section_t below
 
 ```cpp
@@ -22,13 +23,13 @@ typedef struct {
 get elf sections using elf-parser
 
 ```cpp
-#include <elf-parser.h>
-elf_parser::Elf_parser elf_parser(executable_path);
-std::vector<elf_parser::section_t> secs = elf_parser.get_sections();
+#include <elf_parser.hpp>
+const elf_parser::Elf_parser elf_parser(executable_path);
+const std::vector<elf_parser::section_t> secs = elf_parser.get_sections();
 ```
 see [example](examples/sections.cc)
 
-## Segments (readelf -l executable)
+### Segments (readelf -l executable)
 parse program header table from elf binary and return vector of segment_t below
 
 ```cpp
@@ -42,13 +43,13 @@ typedef struct {
 get elf segments using elf-parser
 
 ```cpp
-#include <elf-parser.h>
-elf_parser::Elf_parser elf_parser(executable_path);
-std::vector<elf_parser::segment_t> segs = elf_parser.get_segments();
+#include <elf_parser.hpp>
+const elf_parser::Elf_parser elf_parser(executable_path);
+const std::vector<elf_parser::segment_t> segs = elf_parser.get_segments();
 ```
 see [example](examples/segments.cc)
 
-## Symbols (readelf -s executable)
+### Symbols (readelf -s executable)
 parse symbols table from elf binary and return vector of symbol_t below
 
 ```cpp
@@ -63,13 +64,13 @@ typedef struct {
 get elf symbols using elf-parser
 
 ```cpp
-#include <elf-parser.h>
-elf_parser::Elf_parser elf_parser(executable_path);
-std::vector<elf_parser::symbol_t> syms = elf_parser.get_symbols();
+#include <elf_parser.hpp>
+const elf_parser::Elf_parser elf_parser(executable_path);
+const std::vector<elf_parser::symbol_t> syms = elf_parser.get_symbols();
 ```
 see [example](examples/symbols.cc)
 
-## Relocations (readelf -r executable)
+### Relocations (readelf -r executable)
 parse relocations with plt address from elf binary and return vector of relocation_t below
 
 ```cpp
@@ -83,18 +84,23 @@ typedef struct {
 get elf relocations using elf-parser
 
 ```cpp
-#include <elf-parser.h>
-elf_parser::Elf_parser elf_parser(executable_path);
-std::vector<elf_parser::relocation_t> relocs = elf_parser.get_relocations();
+#include <elf_parser.hpp>
+const elf_parser::Elf_parser elf_parser(executable_path);
+const std::vector<elf_parser::relocation_t> relocs = elf_parser.get_relocations();
 ```
 see [example](examples/relocations.cc)
 
 
-# Supported Architecture
-amd64
+## Running Tests  
+* Install `Elfio`  
+* `cd tests`  
+* `make` 
 
-# Projects using elf-parser
-[finixbit / ltrace - Library call tracer](http://github.com/finixbit/ltrace)
+## Supported Architecture
+AMD64
 
-[finixbit / ftrace - Function call tracer](http://github.com/finixbit/ftrace)
+## Projects using elf-parser
+[finixbit / ltrace - Library call tracer](https://github.com/finixbit/ltrace)
+
+[finixbit / ftrace - Function call tracer](https://github.com/finixbit/ftrace)
 
